@@ -2,9 +2,12 @@ package storage
 
 import (
 	"github.com/jackc/pgx/v4"
+	"nats-listener/internal/domain"
 )
 
 type Order interface {
+	GetDBLines() (*[]domain.Order, error)
+	GetLineFromId(id int) (*domain.Order, error)
 }
 
 type Storage struct {
