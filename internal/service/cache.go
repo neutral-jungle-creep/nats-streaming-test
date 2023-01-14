@@ -1,27 +1,20 @@
-package caching
+package service
 
 import (
 	"sync"
 )
 
-// TODO переименовать
-type CacheItemsController interface {
-	SetItem(int, interface{})
-	GetItem(int) (interface{}, bool)
-	DeleteItem(int)
-}
-
-type Cache struct {
+type CacheService struct {
 	sync.RWMutex
 	defaultCapacity int
 	amountItems     int
 	items           map[int]interface{}
 }
 
-func NewCache(capacity int) *Cache {
+func NewCacheService(capacity int) *CacheService {
 	var items = map[int]interface{}{}
 
-	cache := Cache{
+	cache := CacheService{
 		defaultCapacity: capacity,
 		amountItems:     0,
 		items:           items,
@@ -30,14 +23,14 @@ func NewCache(capacity int) *Cache {
 	return &cache
 }
 
-func (c *Cache) SetItem(key int, value interface{}) {
+func (c *CacheService) SetItem(key int, value interface{}) {
 	c.Lock()
 	defer c.Unlock()
 
 	c.items[key] = value
 }
 
-func (c *Cache) GetItem(key int) (interface{}, bool) {
+func (c *CacheService) GetItem(key int) (interface{}, bool) {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -49,7 +42,7 @@ func (c *Cache) GetItem(key int) (interface{}, bool) {
 	return item, true
 }
 
-func (c *Cache) DeleteItem(key int) {
+func (c *CacheService) DeleteItem(key int) {
 	c.Lock()
 	defer c.Unlock()
 
