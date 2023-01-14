@@ -8,6 +8,7 @@ import (
 type Order interface {
 	GetDBLines() (*[]domain.Order, error)
 	GetLineFromId(id int) (*domain.Order, error)
+	AddLineToDB(order *domain.Order) error
 }
 
 type Storage struct {

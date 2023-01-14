@@ -9,6 +9,7 @@ import (
 const (
 	getDBLines    = `SELECT * FROM orders ORDER BY id DESC LIMIT 5`
 	getLineFromId = `SELECT * FROM orders WHERE id=$1`
+	addLineToDB   = ``
 )
 
 type PgOrderStorage struct {
@@ -51,4 +52,13 @@ func (s *PgOrderStorage) GetLineFromId(id int) (*domain.Order, error) {
 		return nil, err
 	}
 	return &order, nil
+}
+
+func (s *PgOrderStorage) AddLineToDB(order *domain.Order) error {
+	_, err := s.conn.Exec(context.Background(), addLineToDB)
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
