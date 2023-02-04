@@ -11,12 +11,20 @@ type Order interface {
 	AddLineToDB(order *domain.Order) error
 }
 
-type Storage struct {
-	Order
+type Cache interface {
+	SetItem(key int, value interface{})
+	GetItem(key int) (interface{}, bool)
+	DeleteItem(key int)
 }
 
-func NewStorage(conn *pgx.Conn) *Storage {
+type Storage struct {
+	Order
+	Cache
+}
+
+func NewStorage(conn *pgx.Conn, cacheCapacity int) *Storage {
 	return &Storage{
 		Order: NewPgOrderStorage(conn),
+		Cache: NewCacheStorage(cacheCapacity),
 	}
 }
