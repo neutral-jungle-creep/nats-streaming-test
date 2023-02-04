@@ -8,6 +8,7 @@ import (
 type Config struct {
 	Nats     *NatsConfig
 	DataBase *DataBaseConfig
+	Http     *HttpConfig
 }
 
 type NatsConfig struct {
@@ -21,6 +22,10 @@ type DataBaseConfig struct {
 	ConnLink string
 }
 
+type HttpConfig struct {
+	Port string
+}
+
 func NewConfig() *Config {
 	return &Config{
 		Nats: &NatsConfig{
@@ -31,6 +36,9 @@ func NewConfig() *Config {
 		},
 		DataBase: &DataBaseConfig{
 			ConnLink: viper.GetString("dataBase.pgConnLink"),
+		},
+		Http: &HttpConfig{
+			Port: viper.GetString("http.port"),
 		},
 	}
 }
