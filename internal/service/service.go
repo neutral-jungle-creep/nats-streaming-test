@@ -1,19 +1,20 @@
 package service
 
-type Order interface {
-}
+import (
+	"nats-listener/internal/storage"
+)
 
-type Cache interface {
-	SetItem(int, interface{})
-	GetItem(int) (interface{}, bool)
-	DeleteItem(int)
+type Order interface {
+	GetOrderById(id int) (interface{}, error)
+	AddNewOrder(order string) error
 }
 
 type Service struct {
 	Order
-	Cache
 }
 
-func NewService() *Service {
-	return &Service{}
+func NewService(storage *storage.Storage) *Service {
+	return &Service{
+		Order: NewOrderService(storage),
+	}
 }
