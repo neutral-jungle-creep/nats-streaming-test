@@ -2,19 +2,18 @@ package storage
 
 import (
 	"github.com/jackc/pgx/v4"
+	"nats-listener/internal/caching"
 	"nats-listener/internal/domain"
+	"nats-listener/pkg/logger"
 )
 
 type Order interface {
-	GetDBLines() (*[]domain.Order, error)
-	GetLineFromId(id int) (*domain.Order, error)
-	AddLineToDB(order *domain.Order) error
+	AddOrderToDB(order string) error
 }
 
 type Cache interface {
-	SetItem(key int, value interface{})
-	GetItem(key int) (interface{}, bool)
-	DeleteItem(key int)
+	GetOrderFromCache(id int) (interface{}, error)
+	AddOrderToCache(order *domain.Order)
 }
 
 type Storage struct {
@@ -22,9 +21,9 @@ type Storage struct {
 	Cache
 }
 
-func NewStorage(conn *pgx.Conn, cacheCapacity int) *Storage {
+func NewStorage(conn *pgx.Conn, cache *caching.Cache, log *logger.Logger) *Storage {
 	return &Storage{
-		Order: NewPgOrderStorage(conn),
-		Cache: NewCacheStorage(cacheCapacity),
+		Order: NewPgOrderStorage(conn, log),
+		Cache: NewCacheStorage(cache, log),
 	}
 }

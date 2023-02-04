@@ -3,62 +3,31 @@ package storage
 import (
 	"context"
 	"github.com/jackc/pgx/v4"
-	"nats-listener/internal/domain"
+	"nats-listener/pkg/logger"
 )
 
 const (
-	getDBLines    = `SELECT * FROM orders ORDER BY id DESC LIMIT 5`
-	getLineFromId = `SELECT * FROM orders WHERE id=$1`
-	addLineToDB   = ``
+	addLineToDB = `INSERT INTO orders (order_data) VALUES ($1)`
 )
 
 type PgOrderStorage struct {
 	conn *pgx.Conn
+	log  *logger.Logger
 }
 
-func NewPgOrderStorage(conn *pgx.Conn) *PgOrderStorage {
+func NewPgOrderStorage(conn *pgx.Conn, log *logger.Logger) *PgOrderStorage {
 	return &PgOrderStorage{
 		conn: conn,
+		log:  log,
 	}
 }
 
-func (s *PgOrderStorage) GetDBLines() (*[]domain.Order, error) {
-	var orders []domain.Order
-	lines, err := s.conn.Query(context.Background(), getDBLines)
-	if err != nil {
-		return nil, err
-	}
-
-	for lines.Next() {
-		var order domain.Order
-
-		err := lines.Scan(&order)
-		if err != nil {
-			return nil, err
-		}
-		orders = append(orders, order)
-	}
-
-	return &orders, nil
-}
-
-func (s *PgOrderStorage) GetLineFromId(id int) (*domain.Order, error) {
-	var order domain.Order
-
-	line := s.conn.QueryRow(context.Background(), getLineFromId, id)
-
-	err := line.Scan(&order)
-	if err != nil {
-		return nil, err
-	}
-	return &order, nil
-}
-
-func (s *PgOrderStorage) AddLineToDB(order *domain.Order) error {
-	_, err := s.conn.Exec(context.Background(), addLineToDB)
+func (s *PgOrderStorage) AddOrderToDB(order string) error {
+	_, err := s.conn.Exec(context.Background(), addLineToDB, order)
 
 	if err != nil {
 		return err
 	}
+	s.log.Infof("add to data base order: %s", order)
 	return nil
 }
