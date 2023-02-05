@@ -22,6 +22,7 @@ func (h *Handler) HandleNewOrder(order string) {
 
 func (h *Handler) GetOrderById(w http.ResponseWriter, r *http.Request) {
 	orderId := r.URL.Query().Get("id")
+	w.Header().Set("Content-Type", "application/json")
 	if orderId == "" {
 		w.WriteHeader(404)
 		return
@@ -40,5 +41,7 @@ func (h *Handler) GetOrderById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	result, _ := json.Marshal(order)
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(result)
 }
