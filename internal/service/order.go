@@ -20,16 +20,17 @@ func (s *OrderService) GetOrderById(id int) (interface{}, error) {
 	return s.storage.GetOrderFromCache(id)
 }
 
-func (s *OrderService) AddNewOrder(o string) error {
-	var order *domain.Order
+func (s *OrderService) AddNewOrder(order *domain.Order) error {
 
-	if err := s.storage.AddOrderToDB(o); err != nil {
+	o, err := json.Marshal(order)
+	if err != nil {
 		return err
 	}
 
-	if err := json.Unmarshal([]byte(o), &order); err != nil {
+	if err := s.storage.AddOrderToDB(string(o)); err != nil {
 		return err
 	}
+
 	s.storage.AddOrderToCache(order)
 
 	return nil

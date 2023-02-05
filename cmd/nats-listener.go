@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/go-playground/validator/v10"
 	"nats-listener/configs"
 	"nats-listener/internal/caching"
 	"nats-listener/internal/delivery"
@@ -38,8 +39,10 @@ func main() {
 	stor := storage.NewStorage(dbConn, cache, log)
 	serv := service.NewService(stor)
 	handler := delivery.NewHandler(serv)
+	var valid *validator.Validate
+	valid = validator.New()
 
-	natsQueue, err := nats.NewNatsQueue(config.Nats)
+	natsQueue, err := nats.NewNatsQueue(config.Nats, valid)
 	if err != nil {
 		log.Fatalf("can't connect to nats: %s", err.Error())
 	}

@@ -1,12 +1,13 @@
 package service
 
 import (
+	"nats-listener/internal/domain"
 	"nats-listener/internal/storage"
 )
 
 type Order interface {
 	GetOrderById(id int) (interface{}, error)
-	AddNewOrder(order string) error
+	AddNewOrder(order *domain.Order) error
 }
 
 type Service struct {

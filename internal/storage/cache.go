@@ -21,7 +21,7 @@ func NewCacheStorage(cache *caching.Cache, log *logger.Logger) *CacheStorage {
 
 func (c *CacheStorage) AddOrderToCache(order *domain.Order) {
 	c.cache.SetItem(order)
-	c.log.Infof("add to cache order №[%s]", order.OrderUid)
+	c.log.Infof("add to cache order №[%s]", order.OrderUID)
 }
 
 func (c *CacheStorage) GetOrderFromCache(id int) (interface{}, error) {

@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"encoding/json"
+	"nats-listener/internal/domain"
 	"nats-listener/internal/service"
 	"net/http"
 	"strconv"
@@ -16,7 +17,7 @@ func NewHandler(service *service.Service) *Handler {
 		service: service,
 	}
 }
-func (h *Handler) HandleNewOrder(order string) {
+func (h *Handler) HandleNewOrder(order *domain.Order) {
 	h.service.AddNewOrder(order)
 }
 
