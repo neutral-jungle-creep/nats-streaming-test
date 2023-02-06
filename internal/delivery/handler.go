@@ -24,25 +24,27 @@ func (h *Handler) HandleNewOrder(order *domain.Order) {
 func (h *Handler) GetOrderById(w http.ResponseWriter, r *http.Request) {
 	orderId := r.URL.Query().Get("id")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	if orderId == "" {
 		w.WriteHeader(404)
+		w.Write([]byte("поле для ввода номера заказа не должно быть пустым"))
 		return
 	}
 
 	id, err := strconv.Atoi(orderId)
 	if err != nil {
 		w.WriteHeader(404)
+		w.Write([]byte("заказ не найден"))
 		return
 	}
 
 	order, err := h.service.GetOrderById(id)
 	if err != nil {
 		w.WriteHeader(404)
+		w.Write([]byte("заказ не найден"))
 		return
 	}
 
 	result, _ := json.Marshal(order)
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(result)
 }

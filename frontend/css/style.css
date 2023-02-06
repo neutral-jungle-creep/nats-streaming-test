@@ -1,0 +1,30 @@
+:root {
+    --gray-color: #97a5a8;
+    --white-color: #eee;
+}
+
+body {
+    background-color: var(--white-color);
+}
+
+.container {
+    padding: 10px 0;
+}
+
+.btn:hover {
+    background-color: var(--gray-color);
+}
+
+table {
+    table-layout: fixed;
+}
+
+input {
+    border-radius: 10px;
+    height: 39px;
+    width: 80px;
+}
+
+input:hover {
+    background-color: var(--white-color);
+}
