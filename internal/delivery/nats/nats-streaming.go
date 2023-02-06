@@ -45,7 +45,7 @@ func (nq *NatsQueue) OnNewMessage(handler func(order *domain.Order)) {
 		if err := json.Unmarshal(msg.Data, &order); err != nil {
 			return
 		}
-		//logrus.Infof("полученное сообщение, %v", order.OrderUID)
+		logrus.Infof("полученное сообщение, %v", order.OrderUID)
 
 		if err := nq.valid.Struct(order); err != nil {
 			if _, ok := err.(*validator.InvalidValidationError); ok {
