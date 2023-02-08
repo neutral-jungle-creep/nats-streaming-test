@@ -20,11 +20,11 @@ func NewCacheStorage(cache *caching.Cache, log *logger.Logger) *CacheStorage {
 }
 
 func (c *CacheStorage) AddOrderToCache(order *domain.Order) {
-	c.cache.SetItem(order)
+	c.cache.SetItem(order.OrderUID, order)
 	c.log.Infof("add to cache order №[%s]", order.OrderUID)
 }
 
-func (c *CacheStorage) GetOrderFromCache(id int) (interface{}, error) {
+func (c *CacheStorage) GetOrderFromCache(id string) (interface{}, error) {
 	order, found := c.cache.GetItem(id)
 	if !found {
 		c.log.Errorf("can't find in cache order [%d]", id)

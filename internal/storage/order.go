@@ -2,12 +2,14 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/jackc/pgx/v4"
+	"nats-listener/internal/domain"
 	"nats-listener/pkg/logger"
 )
 
 const (
-	addLineToDB = `INSERT INTO orders (order_data) VALUES ($1)`
+	addLineToDB = `INSERT INTO orders (id, order_data) VALUES ($1, $2)`
 )
 
 type PgOrderStorage struct {
@@ -22,12 +24,15 @@ func NewPgOrderStorage(conn *pgx.Conn, log *logger.Logger) *PgOrderStorage {
 	}
 }
 
-func (s *PgOrderStorage) AddOrderToDB(order string) error {
-	_, err := s.conn.Exec(context.Background(), addLineToDB, order)
-
+func (s *PgOrderStorage) AddOrderToDB(order *domain.Order) error {
+	o, err := json.Marshal(order)
 	if err != nil {
 		return err
 	}
-	s.log.Infof("add to data base order: %s", order)
+
+	if _, err := s.conn.Exec(context.Background(), addLineToDB, order.OrderUID, o); err != nil {
+		return err
+	}
+	s.log.Infof("add to data base order: %s", o)
 	return nil
 }

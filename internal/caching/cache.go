@@ -13,18 +13,18 @@ const getDBLines = `SELECT * FROM orders`
 type Cache struct {
 	rw         sync.RWMutex
 	lastItemId int
-	items      map[int]interface{}
+	items      map[string]interface{}
 }
 
 func NewCache() *Cache {
 	return &Cache{
 		lastItemId: 0,
-		items:      map[int]interface{}{},
+		items:      map[string]interface{}{},
 	}
 }
 
 func (c *Cache) FillCache(conn *pgx.Conn) error {
-	var orders = map[int]interface{}{}
+	var orders = map[string]interface{}{}
 
 	lines, err := conn.Query(context.Background(), getDBLines)
 	if err != nil {
@@ -32,8 +32,7 @@ func (c *Cache) FillCache(conn *pgx.Conn) error {
 	}
 
 	for lines.Next() {
-		var id int
-		var jsonOrder string
+		var id, jsonOrder string
 		var order domain.Order
 
 		if err := lines.Scan(&id, &jsonOrder); err != nil {
@@ -43,21 +42,19 @@ func (c *Cache) FillCache(conn *pgx.Conn) error {
 			return err
 		}
 		orders[id] = order
-		c.lastItemId = id
 	}
 	c.items = orders
 	return err
 }
 
-func (c *Cache) SetItem(value interface{}) {
+func (c *Cache) SetItem(key string, value interface{}) {
 	c.rw.Lock()
 	defer c.rw.Unlock()
 
-	c.lastItemId++
-	c.items[c.lastItemId] = value
+	c.items[key] = value
 }
 
-func (c *Cache) GetItem(key int) (interface{}, bool) {
+func (c *Cache) GetItem(key string) (interface{}, bool) {
 	c.rw.RLock()
 	defer c.rw.RUnlock()
 

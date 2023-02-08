@@ -1,7 +1,6 @@
 package service
 
 import (
-	"encoding/json"
 	"nats-listener/internal/domain"
 	"nats-listener/internal/storage"
 )
@@ -16,22 +15,15 @@ func NewOrderService(storage *storage.Storage) *OrderService {
 	}
 }
 
-func (s *OrderService) GetOrderById(id int) (interface{}, error) {
+func (s *OrderService) GetOrderById(id string) (interface{}, error) {
 	return s.storage.GetOrderFromCache(id)
 }
 
 func (s *OrderService) AddNewOrder(order *domain.Order) error {
-
-	o, err := json.Marshal(order)
-	if err != nil {
-		return err
-	}
-
-	if err := s.storage.AddOrderToDB(string(o)); err != nil {
+	if err := s.storage.AddOrderToDB(order); err != nil {
 		return err
 	}
 
 	s.storage.AddOrderToCache(order)
-
 	return nil
 }

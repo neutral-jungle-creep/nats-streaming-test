@@ -8,11 +8,11 @@ import (
 )
 
 type Order interface {
-	AddOrderToDB(order string) error
+	AddOrderToDB(order *domain.Order) error
 }
 
 type Cache interface {
-	GetOrderFromCache(id int) (interface{}, error)
+	GetOrderFromCache(id string) (interface{}, error)
 	AddOrderToCache(order *domain.Order)
 }
 

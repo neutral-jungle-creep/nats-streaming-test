@@ -6,7 +6,7 @@ import (
 )
 
 type Order interface {
-	GetOrderById(id int) (interface{}, error)
+	GetOrderById(id string) (interface{}, error)
 	AddNewOrder(order *domain.Order) error
 }
 

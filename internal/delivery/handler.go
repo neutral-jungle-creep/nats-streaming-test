@@ -5,7 +5,6 @@ import (
 	"nats-listener/internal/domain"
 	"nats-listener/internal/service"
 	"net/http"
-	"strconv"
 )
 
 type Handler struct {
@@ -31,14 +30,7 @@ func (h *Handler) GetOrderById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := strconv.Atoi(orderId)
-	if err != nil {
-		w.WriteHeader(404)
-		w.Write([]byte("заказ не найден"))
-		return
-	}
-
-	order, err := h.service.GetOrderById(id)
+	order, err := h.service.GetOrderById(orderId)
 	if err != nil {
 		w.WriteHeader(404)
 		w.Write([]byte("заказ не найден"))
