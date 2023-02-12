@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	addLineToDB = `INSERT INTO orders (id, order_data) VALUES ($1, $2)`
+	addLineToDB = `INSERT INTO orders (order_uid, order_data) VALUES ($1, $2)`
 )
 
 type PgOrderStorage struct {

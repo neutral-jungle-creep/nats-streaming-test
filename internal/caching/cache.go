@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-const getDBLines = `SELECT * FROM orders`
+const getDBLines = `SELECT order_uid, order_data FROM orders`
 
 type Cache struct {
 	rw         sync.RWMutex
