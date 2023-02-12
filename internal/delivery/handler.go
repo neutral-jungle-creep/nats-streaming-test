@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"encoding/json"
+	"github.com/sirupsen/logrus"
 	"nats-listener/internal/domain"
 	"nats-listener/internal/service"
 	"net/http"
@@ -17,7 +18,9 @@ func NewHandler(service *service.Service) *Handler {
 	}
 }
 func (h *Handler) HandleNewOrder(order *domain.Order) {
-	h.service.AddNewOrder(order)
+	if err := h.service.AddNewOrder(order); err != nil {
+		logrus.Info(err.Error())
+	}
 }
 
 func (h *Handler) GetOrderById(w http.ResponseWriter, r *http.Request) {
