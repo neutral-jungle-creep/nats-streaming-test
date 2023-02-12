@@ -11,15 +11,13 @@ import (
 const getDBLines = `SELECT order_uid, order_data FROM orders`
 
 type Cache struct {
-	rw         sync.RWMutex
-	lastItemId int
-	items      map[string]interface{}
+	rw    sync.RWMutex
+	items map[string]interface{}
 }
 
 func NewCache() *Cache {
 	return &Cache{
-		lastItemId: 0,
-		items:      map[string]interface{}{},
+		items: map[string]interface{}{},
 	}
 }
 
