@@ -28,14 +28,14 @@ func (h *Handler) GetOrderById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	if orderId == "" {
-		w.WriteHeader(404)
+		w.WriteHeader(204)
 		w.Write([]byte("поле для ввода номера заказа не должно быть пустым"))
 		return
 	}
 
 	order, err := h.service.GetOrderById(orderId)
 	if err != nil {
-		w.WriteHeader(404)
+		w.WriteHeader(204)
 		w.Write([]byte("заказ не найден"))
 		return
 	}

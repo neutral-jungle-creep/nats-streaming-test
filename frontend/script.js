@@ -4,8 +4,8 @@ const order_area = document.querySelector('#order_area')
 const delivery_area = document.querySelector('#delivery_area')
 const payment_area = document.querySelector('#payment_area')
 const items_area = document.querySelector('#items_area')
+const e_label = document.querySelector('#e_label')
 
-console.log(button)
 
 button.addEventListener('click', (e) => {
     console.log("click")
@@ -15,13 +15,15 @@ button.addEventListener('click', (e) => {
 
 
 async function getOrderById() {
+    let items_res = '';
+    e_label.textContent = '';
+
     const response = await fetch('http://localhost:8008/get-order?id=' + input.value,
         {
             method: 'GET',
         })
 
-    let items_res = '';
-    try {
+    if (response.status == 200) {
         console.log(response)
         let res = await response.json();
         let i = 0;
@@ -79,7 +81,9 @@ async function getOrderById() {
         payment_area.innerHTML = payment_res
         items_area.innerHTML = items_res
         console.log("ответ:", res.track_number)
-    } catch (err) {
-        console.log(err)
     }
+    if (response.status == 204) {
+        e_label.textContent = "заказ не найден"
+    }
+
 }

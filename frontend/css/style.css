@@ -28,3 +28,7 @@ input {
 input:hover {
     background-color: var(--white-color);
 }
+
+#e_label {
+    color: #dc3545;
+}

@@ -9,14 +9,14 @@
 </head>
 <body>
 <div class="container mt-5">
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-12 mt-3 text-center">
             введите номер заказа
         </div>
-        <label class="col-6 mt-2 mb-3 text-end">
+        <div class="col-1 mt-2 mb-3">
             <input id="input" name="order" type="text">
-        </label>
-        <div class="col-6 mt-2 mb-3 text-start">
+        </div>
+        <div class="col-1 mt-2 mb-3">
             <button id="btn" class="btn text-uppercase border-dark">find</button>
         </div>
         <hr>
@@ -34,6 +34,9 @@
                 <td id="items_area"></td>
             </tr>
         </table>
+    </div>
+    <div class="col-12 mt-3 text-center">
+        <label id="e_label"></label>
     </div>
 </div>
 <script src="script.js"></script>
