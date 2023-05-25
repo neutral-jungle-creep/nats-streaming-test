@@ -59,6 +59,10 @@ func main() {
 		log.Infof("server started on: http://localhost:%s", config.Http.Port)
 
 		http.HandleFunc("/get-order", handler.GetOrderById)
+
+		fs := http.FileServer(http.Dir("./frontend"))
+		http.Handle("/", fs)
+
 		log.Fatal(server.Run(config.Http.Port, nil))
 	}()
 
