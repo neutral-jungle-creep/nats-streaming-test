@@ -35,7 +35,7 @@ docker run --nats_orders -p 4222:4222 -p 8222:8222 -d nats-streaming
 Чтобы запустить сервис, нужно набрать в консоли в папке с проектом команду:
 
 ```
-go run ./cmd/nats-listener.go -p my_folder -f my_config
+go run ./cmd/nats-listener.go -p my_folder -c my_config
 ```
 
 Если флаги не указаны, сервис будет искать файл конфигурации в пути по умолчанию: директория **configs**, файл **
