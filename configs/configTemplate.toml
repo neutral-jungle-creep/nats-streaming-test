@@ -1,0 +1,11 @@
+[nats]
+cluster = "test-cluster"
+client = "stan-sub"
+URL       = "127.0.0.1:4222"
+subj = "test"
+
+[dataBase]
+pgConnLink = "postgres://postgres:111@localhost:5432/nats_test"
+
+[http]
+port = "8008"

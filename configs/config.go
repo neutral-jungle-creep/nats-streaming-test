@@ -47,9 +47,9 @@ func init() {
 	var configPath, configFile string
 
 	flag.StringVar(&configPath, "path", "configs", "Path to config file")
-	flag.StringVar(&configFile, "config", "config", "Name of config file")
+	flag.StringVar(&configFile, "config", "configTemplate", "Name of config file")
 	flag.StringVar(&configPath, "p", "configs", "Path to config file")
-	flag.StringVar(&configFile, "c", "config", "Name of config file")
+	flag.StringVar(&configFile, "c", "configTemplate", "Name of config file")
 	flag.Parse()
 
 	viper.AddConfigPath(configPath)
